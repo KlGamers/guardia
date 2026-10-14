@@ -149,8 +149,9 @@ go test -race ./...
 Las pruebas crean repositorios temporales en rutas con espacios y acentos y
 cubren staging parcial, archivos borrados y binarios, conflictos al
 restaurar, timeouts, cancelación, paralelismo, detección en monorepos,
-respaldo de hooks existentes y un `git commit` real que el hook rechaza. La
-cobertura total es de 85%.
+respaldo de hooks existentes, merges en curso, parches que quedaron de una
+ejecución interrumpida y un `git commit` real que el hook rechaza. Todos los
+paquetes superan el 91% de cobertura y el CI falla si el total baja de 90%.
 
 ## Límites
 
