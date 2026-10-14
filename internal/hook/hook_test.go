@@ -74,3 +74,18 @@ func TestHooksPath(t *testing.T) {
 		t.Fatalf("got %s want %s", p, want)
 	}
 }
+
+func TestInstallErrors(t *testing.T) {
+	dir := testgit.New(t)
+	testgit.Git(t, dir, "config", "core.hooksPath", "blocked")
+	testgit.Write(t, dir, "blocked", "i am a file")
+	if _, err := Install(dir, "/g", false); err == nil {
+		t.Fatal("want error when the hooks path is a file")
+	}
+	if _, err := Install(t.TempDir(), "/g", false); err == nil {
+		t.Fatal("want error outside a repo")
+	}
+	if _, err := Uninstall(t.TempDir()); err == nil {
+		t.Fatal("want error outside a repo")
+	}
+}

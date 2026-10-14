@@ -88,3 +88,12 @@ func TestEmptyAndBrokenPackageJSON(t *testing.T) {
 		t.Fatalf("got %v", got)
 	}
 }
+
+func TestUnreadableRoot(t *testing.T) {
+	if _, err := Scan("/definitely/not/here"); err == nil {
+		t.Fatal("want error for a missing root")
+	}
+	if scripts("/definitely/not/here/package.json") != nil || flutter("/definitely/not/here") {
+		t.Fatal("missing files must be ignored")
+	}
+}

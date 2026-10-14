@@ -84,3 +84,24 @@ func TestDurJSON(t *testing.T) {
 		t.Fatalf("%s %v", raw, err)
 	}
 }
+
+func TestWaitAndBase(t *testing.T) {
+	if (Check{}).Wait(Dur(time.Minute)) != time.Minute {
+		t.Fatal("default wait")
+	}
+	if (Check{Dir: "./web/"}).Base() != "web" || (Check{}).Base() != "." {
+		t.Fatal("base")
+	}
+}
+
+func TestLoadUnreadable(t *testing.T) {
+	dir := t.TempDir()
+	os.Mkdir(filepath.Join(dir, File), 0o755)
+	if _, _, err := Load(dir); err == nil {
+		t.Fatal("want error when guardia.json is a directory")
+	}
+	var d Dur
+	if err := d.UnmarshalJSON([]byte(`5`)); err == nil {
+		t.Fatal("want error for a non-string duration")
+	}
+}

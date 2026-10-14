@@ -156,3 +156,19 @@ func TestBusy(t *testing.T) {
 		t.Fatal("merge not detected")
 	}
 }
+
+func TestErrorsOutsideRepo(t *testing.T) {
+	dir := t.TempDir()
+	if _, err := Path(dir, "x"); err == nil {
+		t.Error("path")
+	}
+	if _, err := Staged(dir); err == nil {
+		t.Error("staged")
+	}
+	if _, err := Hide(dir); err == nil {
+		t.Error("hide")
+	}
+	if Busy(dir) {
+		t.Error("busy outside a repo")
+	}
+}
